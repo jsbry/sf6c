@@ -10,19 +10,37 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 )
 
-//go:embed resource/arrow.png resource/low.png resource/middle.png resource/hi.png resource/dp.png resource/di.png resource/di.png resource/auto.png
+//go:embed resource/c/up.png resource/c/left.png resource/c/right.png resource/c/down.png resource/c/down-left.png resource/c/down-right.png resource/c/low-punch.png resource/c/middle-punch.png resource/c/hi-punch.png resource/c/low-kick.png resource/c/middle-kick.png resource/c/hi-kick.png
 var embedImg embed.FS
 
-var imgArrow, imgLow, imgMiddle, imgHi, imgDP, imgDI, imgAuto *ebiten.Image
+var (
+	imgUp        *ebiten.Image
+	imgLeft      *ebiten.Image
+	imgRight     *ebiten.Image
+	imgDown      *ebiten.Image
+	imgDownLeft  *ebiten.Image
+	imgDownRight *ebiten.Image
+	imgLP        *ebiten.Image
+	imgMP        *ebiten.Image
+	imgHP        *ebiten.Image
+	imgLK        *ebiten.Image
+	imgMK        *ebiten.Image
+	imgHK        *ebiten.Image
+)
 
 func init() {
-	initImage(&imgArrow, "resource/arrow.png")
-	initImage(&imgLow, "resource/low.png")
-	initImage(&imgMiddle, "resource/middle.png")
-	initImage(&imgHi, "resource/hi.png")
-	initImage(&imgDP, "resource/dp.png")
-	initImage(&imgDI, "resource/di.png")
-	initImage(&imgAuto, "resource/auto.png")
+	initImage(&imgUp, "resource/c/up.png")
+	initImage(&imgLeft, "resource/c/left.png")
+	initImage(&imgRight, "resource/c/right.png")
+	initImage(&imgDown, "resource/c/down.png")
+	initImage(&imgDownLeft, "resource/c/down-left.png")
+	initImage(&imgDownRight, "resource/c/down-right.png")
+	initImage(&imgLP, "resource/c/low-punch.png")
+	initImage(&imgMP, "resource/c/middle-punch.png")
+	initImage(&imgHP, "resource/c/hi-punch.png")
+	initImage(&imgLK, "resource/c/low-kick.png")
+	initImage(&imgMK, "resource/c/middle-kick.png")
+	initImage(&imgHK, "resource/c/hi-kick.png")
 }
 
 func initImage(i **ebiten.Image, p string) {

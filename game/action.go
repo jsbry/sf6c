@@ -3,7 +3,9 @@ package game
 import (
 	"fmt"
 	"image/color"
+	"log"
 	"reflect"
+	"strconv"
 	"strings"
 
 	"github.com/hajimehoshi/bitmapfont/v3"
@@ -17,6 +19,51 @@ const (
 )
 
 func (g *Game) setAction() {
+	if g.gamepadIDs == nil {
+		g.gamepadIDs = map[ebiten.GamepadID]struct{}{}
+	}
+	g.gamepadIDsBuf = inpututil.AppendJustConnectedGamepadIDs(g.gamepadIDsBuf[:0])
+	for _, id := range g.gamepadIDsBuf {
+		log.Printf("gamepad connected: id: %d, SDL ID: %s", id, ebiten.GamepadSDLID(id))
+		g.gamepadIDs[id] = struct{}{}
+	}
+	for id := range g.gamepadIDs {
+		if inpututil.IsGamepadJustDisconnected(id) {
+			log.Printf("gamepad disconnected: id: %d", id)
+			delete(g.gamepadIDs, id)
+		}
+	}
+	pressedButtons := map[ebiten.GamepadID][]string{}
+
+	for id := range g.gamepadIDs {
+		maxButton := ebiten.GamepadButton(ebiten.GamepadButtonCount(id))
+		for b := ebiten.GamepadButton(0); b < maxButton; b++ {
+			if ebiten.IsGamepadButtonPressed(id, b) {
+				pressedButtons[id] = append(pressedButtons[id], strconv.Itoa(int(b)))
+			}
+
+			// Log button events.
+			if inpututil.IsGamepadButtonJustPressed(id, b) {
+				log.Printf("button pressed: id: %d, button: %d", id, b)
+			}
+			if inpututil.IsGamepadButtonJustReleased(id, b) {
+				log.Printf("button released: id: %d, button: %d", id, b)
+			}
+		}
+
+		if ebiten.IsStandardGamepadLayoutAvailable(id) {
+			for b := ebiten.StandardGamepadButton(0); b <= ebiten.StandardGamepadButtonMax; b++ {
+				// Log button events.
+				if inpututil.IsStandardGamepadButtonJustPressed(id, b) {
+					log.Printf("standard button pressed: id: %d, button: %d", id, b)
+				}
+				if inpututil.IsStandardGamepadButtonJustReleased(id, b) {
+					log.Printf("standard button released: id: %d, button: %d", id, b)
+				}
+			}
+		}
+	}
+
 	g.keys = inpututil.AppendPressedKeys(g.keys[:0])
 	g.move = Move{}
 	g.attack = Attack{}
@@ -38,13 +85,22 @@ func (g *Game) setAction() {
 		}
 
 		if k.String() == "U" {
-			g.attack.Low = true
+			g.attack.LP = true
 		}
 		if k.String() == "I" {
-			g.attack.Middle = true
+			g.attack.MP = true
 		}
 		if k.String() == "O" {
-			g.attack.Hi = true
+			g.attack.HP = true
+		}
+		if k.String() == "J" {
+			g.attack.LK = true
+		}
+		if k.String() == "K" {
+			g.attack.MK = true
+		}
+		if k.String() == "L" {
+			g.attack.HK = true
 		}
 	}
 }
@@ -94,29 +150,29 @@ func (g *Game) drawHistory(screen *ebiten.Image, perfectTimingKeys []int) {
 			pressedKeys = []int{KeyRight}
 		}
 
-		if h.a.Low {
-			keyStrs = append(keyStrs, "弱")
-			pressedKeys = append(pressedKeys, KeyLow)
+		if h.a.LP {
+			keyStrs = append(keyStrs, "弱P")
+			pressedKeys = append(pressedKeys, KeyLP)
 		}
-		if h.a.Middle {
-			keyStrs = append(keyStrs, "中")
-			pressedKeys = append(pressedKeys, KeyMiddle)
+		if h.a.MP {
+			keyStrs = append(keyStrs, "中P")
+			pressedKeys = append(pressedKeys, KeyMP)
 		}
-		if h.a.Hi {
-			keyStrs = append(keyStrs, "強")
-			pressedKeys = append(pressedKeys, KeyHi)
+		if h.a.HP {
+			keyStrs = append(keyStrs, "強P")
+			pressedKeys = append(pressedKeys, KeyHP)
 		}
-		if h.a.DP {
-			keyStrs = append(keyStrs, "DP")
-			pressedKeys = append(pressedKeys, KeyDP)
+		if h.a.LK {
+			keyStrs = append(keyStrs, "弱K")
+			pressedKeys = append(pressedKeys, KeyLP)
 		}
-		if h.a.DI {
-			keyStrs = append(keyStrs, "DI")
-			pressedKeys = append(pressedKeys, KeyDI)
+		if h.a.MK {
+			keyStrs = append(keyStrs, "中K")
+			pressedKeys = append(pressedKeys, KeyMP)
 		}
-		if h.a.Auto {
-			keyStrs = append(keyStrs, "AUTO")
-			pressedKeys = append(pressedKeys, KeyAuto)
+		if h.a.HK {
+			keyStrs = append(keyStrs, "強K")
+			pressedKeys = append(pressedKeys, KeyHP)
 		}
 
 		if i == 0 && reflect.DeepEqual(perfectTimingKeys, pressedKeys) {

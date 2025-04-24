@@ -21,13 +21,12 @@ const (
 	KeyDownRight = 3
 	KeyRight     = 6
 
-	KeyLow    = 11
-	KeyMiddle = 12
-	KeyHi     = 13
-
-	KeyDP   = 21
-	KeyDI   = 22
-	KeyAuto = 23
+	KeyLP = 11
+	KeyMP = 12
+	KeyHP = 13
+	KeyLK = 14
+	KeyMK = 15
+	KeyHK = 16
 
 	KeyLeftX      = 0
 	KeyDownLeftX  = 50
@@ -35,13 +34,12 @@ const (
 	KeyDownRightX = 150
 	KeyRightX     = 200
 
-	KeyLowX    = 250
-	KeyMiddleX = 300
-	KeyHiX     = 350
-
-	KeyDPX   = 400
-	KeyDIX   = 450
-	KeyAutoX = 500
+	KeyLPX = 250
+	KeyMPX = 300
+	KeyHPX = 350
+	KeyLKX = 400
+	KeyMKX = 450
+	KeyHKX = 500
 
 	noteStart      = -40
 	moveDistance   = 5
@@ -116,24 +114,24 @@ func (g *Game) flow(screen *ebiten.Image) []int {
 		case KeyRight:
 			m.Right = true
 			arrowRight(screen, float64(KeyRightX), float64(n.Y))
-		case KeyLow:
-			atk.Low = true
-			attackLow(screen, float64(KeyLowX), float64(n.Y))
-		case KeyMiddle:
-			atk.Middle = true
-			attackMiddle(screen, float64(KeyMiddleX), float64(n.Y))
-		case KeyHi:
-			atk.Hi = true
-			attackHi(screen, float64(KeyHiX), float64(n.Y))
-		case KeyDP:
-			atk.DP = true
-			attackDP(screen, float64(KeyDPX), float64(n.Y))
-		case KeyDI:
-			atk.DI = true
-			attackDI(screen, float64(KeyDIX), float64(n.Y))
-		case KeyAuto:
-			atk.DI = true
-			attackAuto(screen, float64(KeyAutoX), float64(n.Y))
+		case KeyLP:
+			atk.LP = true
+			attackLP(screen, float64(KeyLPX), float64(n.Y))
+		case KeyMP:
+			atk.MP = true
+			attackMP(screen, float64(KeyMPX), float64(n.Y))
+		case KeyHP:
+			atk.HP = true
+			attackHP(screen, float64(KeyHPX), float64(n.Y))
+		case KeyLK:
+			atk.LK = true
+			attackLK(screen, float64(KeyLKX), float64(n.Y))
+		case KeyMK:
+			atk.MK = true
+			attackMK(screen, float64(KeyMKX), float64(n.Y))
+		case KeyHK:
+			atk.HK = true
+			attackHK(screen, float64(KeyHKX), float64(n.Y))
 		default:
 		}
 		if n.Y == perfectTimingY {
@@ -150,10 +148,10 @@ func (g *Game) perfect(screen *ebiten.Image) {
 	arrowDown(screen, float64(KeyDownX), float64(perfectTimingY))
 	arrowDownRight(screen, float64(KeyDownRightX), float64(perfectTimingY))
 	arrowRight(screen, float64(KeyRightX), float64(perfectTimingY))
-	attackLow(screen, float64(KeyLowX), float64(perfectTimingY))
-	attackMiddle(screen, float64(KeyMiddleX), float64(perfectTimingY))
-	attackHi(screen, float64(KeyHiX), float64(perfectTimingY))
-	attackDP(screen, float64(KeyDPX), float64(perfectTimingY))
-	attackDI(screen, float64(KeyDIX), float64(perfectTimingY))
-	attackAuto(screen, float64(KeyAutoX), float64(perfectTimingY))
+	attackLP(screen, float64(KeyLPX), float64(perfectTimingY))
+	attackMP(screen, float64(KeyMPX), float64(perfectTimingY))
+	attackHP(screen, float64(KeyHPX), float64(perfectTimingY))
+	attackLK(screen, float64(KeyLKX), float64(perfectTimingY))
+	attackMK(screen, float64(KeyMKX), float64(perfectTimingY))
+	attackHK(screen, float64(KeyHKX), float64(perfectTimingY))
 }
