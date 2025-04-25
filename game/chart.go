@@ -8,7 +8,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 )
 
-//go:embed combo/c1.json
+//go:embed combo/c2.json
 var embedChart embed.FS
 
 var chartCombo1 []Chart
@@ -58,7 +58,7 @@ type Note struct {
 }
 
 func init() {
-	initChart(&chartCombo1, "combo/c1.json")
+	initChart(&chartCombo1, "combo/c2.json")
 }
 
 func initChart(c *[]Chart, p string) {
