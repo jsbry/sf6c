@@ -61,14 +61,13 @@ func (g *Game) setAction() {
 					// log.Printf("standard button pressed: id: %d, button: %d", id, b)
 				}
 				if inpututil.IsStandardGamepadButtonJustReleased(id, b) {
-					i := 0
-					for _, v := range g.keys {
-						if v != b {
-							g.keys[i] = v
-							i++
+					for i, v := range g.keys {
+						if v == b {
+							g.keys[i] = g.keys[len(g.keys)-1]
+							g.keys = g.keys[:len(g.keys)-1]
+							break
 						}
 					}
-					g.keys = g.keys[:i]
 					// log.Printf("standard button released: id: %d, button: %d", id, b)
 				}
 			}
