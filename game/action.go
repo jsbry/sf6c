@@ -3,7 +3,6 @@ package game
 import (
 	"fmt"
 	"image/color"
-	"log"
 	"reflect"
 	"strconv"
 	"strings"
@@ -19,17 +18,20 @@ const (
 )
 
 func (g *Game) setAction() {
+	g.move = Move{}
+	g.attack = Attack{}
+
 	if g.gamepadIDs == nil {
 		g.gamepadIDs = map[ebiten.GamepadID]struct{}{}
 	}
 	g.gamepadIDsBuf = inpututil.AppendJustConnectedGamepadIDs(g.gamepadIDsBuf[:0])
 	for _, id := range g.gamepadIDsBuf {
-		log.Printf("gamepad connected: id: %d, SDL ID: %s", id, ebiten.GamepadSDLID(id))
+		// log.Printf("gamepad connected: id: %d, SDL ID: %s", id, ebiten.GamepadSDLID(id))
 		g.gamepadIDs[id] = struct{}{}
 	}
 	for id := range g.gamepadIDs {
 		if inpututil.IsGamepadJustDisconnected(id) {
-			log.Printf("gamepad disconnected: id: %d", id)
+			// log.Printf("gamepad disconnected: id: %d", id)
 			delete(g.gamepadIDs, id)
 		}
 	}
@@ -43,38 +45,45 @@ func (g *Game) setAction() {
 			}
 
 			// Log button events.
-			if inpututil.IsGamepadButtonJustPressed(id, b) {
-				log.Printf("button pressed: id: %d, button: %d", id, b)
-			}
-			if inpututil.IsGamepadButtonJustReleased(id, b) {
-				log.Printf("button released: id: %d, button: %d", id, b)
-			}
+			// if inpututil.IsGamepadButtonJustPressed(id, b) {
+			// 	log.Printf("button pressed: id: %d, button: %d", id, b)
+			// }
+			// if inpututil.IsGamepadButtonJustReleased(id, b) {
+			// 	log.Printf("button released: id: %d, button: %d", id, b)
+			// }
 		}
 
 		if ebiten.IsStandardGamepadLayoutAvailable(id) {
 			for b := ebiten.StandardGamepadButton(0); b <= ebiten.StandardGamepadButtonMax; b++ {
 				// Log button events.
 				if inpututil.IsStandardGamepadButtonJustPressed(id, b) {
-					log.Printf("standard button pressed: id: %d, button: %d", id, b)
+					g.keys = append(g.keys, b)
+					// log.Printf("standard button pressed: id: %d, button: %d", id, b)
 				}
 				if inpututil.IsStandardGamepadButtonJustReleased(id, b) {
-					log.Printf("standard button released: id: %d, button: %d", id, b)
+					i := 0
+					for _, v := range g.keys {
+						if v != b {
+							g.keys[i] = v
+							i++
+						}
+					}
+					g.keys = g.keys[:i]
+					// log.Printf("standard button released: id: %d, button: %d", id, b)
 				}
 			}
 		}
 	}
 
-	g.keys = inpututil.AppendPressedKeys(g.keys[:0])
-	g.move = Move{}
-	g.attack = Attack{}
 	for _, k := range g.keys {
-		if k.String() == "A" {
+		// move
+		if k == ebiten.StandardGamepadButtonLeftLeft {
 			g.move.Left = true
 		}
-		if k.String() == "S" {
+		if k == ebiten.StandardGamepadButtonLeftBottom {
 			g.move.Down = true
 		}
-		if k.String() == "D" {
+		if k == ebiten.StandardGamepadButtonLeftRight {
 			g.move.Right = true
 		}
 		if g.move.Left && g.move.Down {
@@ -84,22 +93,44 @@ func (g *Game) setAction() {
 			g.move.DownRight = true
 		}
 
-		if k.String() == "U" {
+		// punch
+		if k == ebiten.StandardGamepadButtonRightLeft {
 			g.attack.LP = true
 		}
-		if k.String() == "I" {
+		if k == ebiten.StandardGamepadButtonRightTop {
 			g.attack.MP = true
 		}
-		if k.String() == "O" {
+		if k == ebiten.StandardGamepadButtonFrontTopRight {
 			g.attack.HP = true
 		}
-		if k.String() == "J" {
+
+		// kick
+		if k == ebiten.StandardGamepadButtonRightBottom {
 			g.attack.LK = true
 		}
-		if k.String() == "K" {
+		if k == ebiten.StandardGamepadButtonRightRight {
 			g.attack.MK = true
 		}
-		if k.String() == "L" {
+		if k == ebiten.StandardGamepadButtonFrontBottomRight {
+			g.attack.HK = true
+		}
+
+		// ex
+		if k == ebiten.StandardGamepadButtonLeftStick {
+			g.attack.LP = true
+			g.attack.LK = true
+		}
+		if k == ebiten.StandardGamepadButtonRightStick {
+			g.attack.HP = true
+			g.attack.HK = true
+		}
+		if k == ebiten.StandardGamepadButtonFrontTopLeft {
+			g.attack.MP = true
+			g.attack.MK = true
+		}
+		if k == ebiten.StandardGamepadButtonFrontBottomLeft {
+			g.attack.LK = true
+			g.attack.MK = true
 			g.attack.HK = true
 		}
 	}

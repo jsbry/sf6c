@@ -24,7 +24,7 @@ const (
 )
 
 type Game struct {
-	keys          []ebiten.Key
+	keys          []ebiten.StandardGamepadButton //[]ebiten.Key
 	fps           int
 	move          Move
 	attack        Attack

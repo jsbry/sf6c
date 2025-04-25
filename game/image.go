@@ -10,7 +10,10 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 )
 
-//go:embed resource/c/up.png resource/c/left.png resource/c/right.png resource/c/down.png resource/c/down-left.png resource/c/down-right.png resource/c/low-punch.png resource/c/middle-punch.png resource/c/hi-punch.png resource/c/low-kick.png resource/c/middle-kick.png resource/c/hi-kick.png
+//go:embed resource/c/up.png resource/c/left.png resource/c/right.png resource/c/down.png
+//go:embed resource/c/down-left.png resource/c/down-right.png
+//go:embed resource/c/low-punch.png resource/c/middle-punch.png resource/c/hi-punch.png
+//go:embed resource/c/low-kick.png resource/c/middle-kick.png resource/c/hi-kick.png
 var embedImg embed.FS
 
 var (
