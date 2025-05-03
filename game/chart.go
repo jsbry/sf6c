@@ -8,7 +8,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 )
 
-//go:embed combo/c2.json
+//go:embed combo/combo.json
 var embedChart embed.FS
 
 var chartCombo1 []Chart
@@ -58,7 +58,7 @@ type Note struct {
 }
 
 func init() {
-	initChart(&chartCombo1, "combo/c2.json")
+	initChart(&chartCombo1, "combo/combo.json")
 }
 
 func initChart(c *[]Chart, p string) {
@@ -76,17 +76,25 @@ func (g *Game) setChart() {
 	for f := 0; f <= MaxTrainingFrame; f++ {
 		for _, c := range chartCombo1 {
 			if f == c.Frame {
-				notes = append(notes, &Note{Key: c.Key, Y: noteStart - (moveDistance * f)})
+				note := &Note{
+					Key: c.Key,
+					Y:   noteStart - (moveDistance * f),
+				}
+				notes = append(notes, note)
 				if c.Hold > 0 {
 					for h := 0; h < c.Hold; h++ {
-						for d := 0; d < moveDistance; d++ {
-							notes = append(notes, &Note{Key: c.Key, Y: noteStart - (moveDistance * f) - h*d})
+						note := &Note{
+							Key: c.Key,
+							Y:   noteStart - (moveDistance * f) - h*moveDistance,
 						}
+						notes = append(notes, note)
 					}
 				}
 			}
 		}
 	}
+
+	// 反転
 	for i := 0; i < len(notes)/2; i++ {
 		notes[i], notes[len(notes)-i-1] = notes[len(notes)-i-1], notes[i]
 	}

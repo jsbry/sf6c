@@ -27,3 +27,8 @@
     - draw frame
 - h
     - hold
+
+## Craete json
+- Key Display
+    - `cd cmd`
+    - `go run main.go`
