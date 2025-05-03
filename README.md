@@ -13,9 +13,22 @@
 - attack
     | key | value |
     | --- | ----- |
-    | 11  | 弱    |
-    | 12  | 中    |
-    | 13  | 強    |
-    | 21  | DP    |
-    | 22  | DI    |
-    | 23  | AUTO  |
+    | 11  | 弱P   |
+    | 12  | 中P   |
+    | 13  | 強P   |
+    | 14  | 弱K   |
+    | 15  | 中K   |
+    | 16  | 強K   |
+
+## Combo json
+- k
+    - key number
+- f
+    - draw frame
+- h
+    - hold
+
+## Craete json
+- Key Display
+    - `cd cmd`
+    - `go run main.go`

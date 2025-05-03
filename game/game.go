@@ -24,7 +24,7 @@ const (
 )
 
 type Game struct {
-	keys          []ebiten.Key
+	keys          []ebiten.StandardGamepadButton //[]ebiten.Key
 	fps           int
 	move          Move
 	attack        Attack
@@ -33,6 +33,9 @@ type Game struct {
 	preAction     *Action
 	actionHistory []*Action
 	notes         []*Note
+
+	gamepadIDsBuf []ebiten.GamepadID
+	gamepadIDs    map[ebiten.GamepadID]struct{}
 }
 
 type Move struct {
@@ -45,12 +48,12 @@ type Move struct {
 }
 
 type Attack struct {
-	Low    bool
-	Middle bool
-	Hi     bool
-	DP     bool
-	DI     bool
-	Auto   bool
+	LP bool
+	MP bool
+	HP bool
+	LK bool
+	MK bool
+	HK bool
 }
 
 type Action struct {

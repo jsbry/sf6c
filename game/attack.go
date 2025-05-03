@@ -2,38 +2,38 @@ package game
 
 import "github.com/hajimehoshi/ebiten/v2"
 
-func attackLow(screen *ebiten.Image, x, y float64) {
+func attackLP(screen *ebiten.Image, x, y float64) {
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Translate(x, y)
-	screen.DrawImage(imgLow, op)
+	screen.DrawImage(imgLP, op)
 }
 
-func attackMiddle(screen *ebiten.Image, x, y float64) {
+func attackMP(screen *ebiten.Image, x, y float64) {
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Translate(x, y)
-	screen.DrawImage(imgMiddle, op)
+	screen.DrawImage(imgMP, op)
 }
 
-func attackHi(screen *ebiten.Image, x, y float64) {
+func attackHP(screen *ebiten.Image, x, y float64) {
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Translate(x, y)
-	screen.DrawImage(imgHi, op)
+	screen.DrawImage(imgHP, op)
 }
 
-func attackDP(screen *ebiten.Image, x, y float64) {
+func attackLK(screen *ebiten.Image, x, y float64) {
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Translate(x, y)
-	screen.DrawImage(imgDP, op)
+	screen.DrawImage(imgLK, op)
 }
 
-func attackDI(screen *ebiten.Image, x, y float64) {
+func attackMK(screen *ebiten.Image, x, y float64) {
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Translate(x, y)
-	screen.DrawImage(imgDI, op)
+	screen.DrawImage(imgMK, op)
 }
 
-func attackAuto(screen *ebiten.Image, x, y float64) {
+func attackHK(screen *ebiten.Image, x, y float64) {
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Translate(x, y)
-	screen.DrawImage(imgAuto, op)
+	screen.DrawImage(imgHK, op)
 }
