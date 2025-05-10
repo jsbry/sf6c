@@ -16,7 +16,7 @@ const (
 	ScreenWidth  = 1280
 	ScreenHeight = 620
 
-	FrameRate        = 60
+	FrameRate        = 59
 	MaxTrainingFrame = 300
 
 	InputKeyX = 590
@@ -28,6 +28,7 @@ type Game struct {
 	fps           int
 	move          Move
 	attack        Attack
+	system        System
 	trainingFrame int
 	chart         []*Chart
 	preAction     *Action
@@ -63,9 +64,17 @@ type Action struct {
 	c color.Color
 }
 
+type System struct {
+	Update bool
+	Frame  bool
+}
+
 func NewGame() *Game {
 	g := &Game{
 		fps: 0,
+		system: System{
+			Update: true,
+		},
 	}
 	g.setChart()
 	return g
@@ -75,25 +84,31 @@ func (g *Game) Update() error {
 	g.setAction()
 	g.setHistory()
 
-	g.fps++
-	if FrameRate < g.fps {
-		g.fps = 0
-	}
-	g.trainingFrame++
+	if g.system.Update || g.system.Frame {
+		g.fps++
+		if FrameRate < g.fps {
+			g.fps = 0
+		}
+		g.trainingFrame++
 
-	for _, n := range g.notes {
-		n.Y++
-	}
-	if g.trainingFrame > MaxTrainingFrame {
-		g.trainingFrame = 0
-		g.chart = []*Chart{}
-		g.setChart()
+		// for _, n := range g.notes {
+		// 	n.Y++
+		// }
+		for _, n := range g.notes {
+			n.Y += moveDistance
+		}
+		if g.trainingFrame > MaxTrainingFrame {
+			g.trainingFrame = 0
+			g.chart = []*Chart{}
+			g.setChart()
+		}
+
+		// for _, n := range g.notes {
+		// 	n.Y += moveDistance
+		// }
 	}
 
-	for _, n := range g.notes {
-		n.Y += moveDistance
-	}
-
+	g.system.Frame = false
 	return nil
 }
 

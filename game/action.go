@@ -133,6 +133,15 @@ func (g *Game) setAction() {
 			g.attack.HK = true
 		}
 	}
+
+	if inpututil.IsKeyJustPressed(ebiten.KeySpace) {
+		g.system.Update = !g.system.Update
+	}
+	if inpututil.IsKeyJustPressed(ebiten.KeyE) {
+		if !g.system.Update {
+			g.system.Frame = true
+		}
+	}
 }
 
 func (g *Game) setHistory() {
