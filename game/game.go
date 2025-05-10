@@ -64,6 +64,10 @@ type Action struct {
 	c color.Color
 }
 
+type System struct {
+	Update bool
+}
+
 func NewGame() *Game {
 	g := &Game{
 		fps: 0,
